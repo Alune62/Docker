@@ -1,14 +1,12 @@
-# Image de base légère et officielle
-FROM nginx:alpine
+FROM node:18-alpine
 
-# Suppression de la page par défaut de Nginx
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copie de tes fichiers HTML dans le répertoire web de Nginx
-COPY ./html /usr/share/nginx/html
+COPY package.json .
+RUN npm install
 
-# Exposition du port 80 (documentation)
-EXPOSE 80
+COPY app.js .
 
-# Commande par défaut au lancement du conteneur
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD ["node", "app.js"]
